@@ -16,7 +16,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "user")
 public class User implements Serializable {
-
+ 
 	/**
 	 * 
 	 */
@@ -42,7 +42,7 @@ public class User implements Serializable {
 	public void setId(long id) {
 		this.id = id;
 	}
-	
+
 	@Column(name = "name", nullable = false)
 	public String getName() {
 		return name;
@@ -51,7 +51,7 @@ public class User implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	@Column(name = "email", nullable = false)
 	public String getEmail() {
 		return email;
@@ -60,7 +60,7 @@ public class User implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
 	@Column(name = "login", nullable = false)
 	public String getLogin() {
 		return login;
@@ -69,7 +69,7 @@ public class User implements Serializable {
 	public void setLogin(String login) {
 		this.login = login;
 	}
-	
+
 	@Column(name = "password", nullable = false)
 	public String getPassword() {
 		return password;
@@ -78,14 +78,20 @@ public class User implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	public List<Model> getModel() {
 		return model;
 	}
 
 	public void setModel(List<Model> model) {
-		this.model = model;
+		this.model = model; 
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", name=" + name + ", email=" + email + ", login=" + login + ", password=" + password
+				+ ", model=" + model + "]";
 	}
 
 }

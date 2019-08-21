@@ -26,8 +26,8 @@ public class Maintence implements Serializable {
 
 	private Long id;
 	private TypeMaintence typeMaintence;
-	private String descricao;
-	private Date dataMaintence;
+	private String description;
+	private Date dateMaintence;
 	private Double priceMaintence;
 	private List<Part> part;
 	
@@ -56,21 +56,21 @@ public class Maintence implements Serializable {
 	}
 	
 	@Column(name = "description", nullable = false)
-	public String getDescricao() {
-		return descricao;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+	public void setDescription(String descricao) {
+		this.description = descricao;
 	}
 	
 	@Column(name = "date_maintence", nullable = false)
-	public Date getDataMaintence() {
-		return dataMaintence;
+	public Date getDateMaintence() {
+		return dateMaintence;
 	}
 	
-	public void setDataMaintence(Date dataMaintence) {
-		this.dataMaintence = dataMaintence;
+	public void setDateMaintence(Date dataMaintence) {
+		this.dateMaintence = dataMaintence;
 	}
 	@Column(name = "price_maintence", nullable = false)
 	public Double getPriceMaintence() {
