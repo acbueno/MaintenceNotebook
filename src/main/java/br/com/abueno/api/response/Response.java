@@ -1,4 +1,4 @@
-package br.com.abueno.api;
+package br.com.abueno.api.response;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +21,8 @@ public class Response<T> {
 	}
 
 	public List<String> getErrors() {
-		if (this.errors == null) {
-			this.errors = new ArrayList<String>();
+		if(this.errors == null) {
+			this.errors = new ArrayList<String>(); 
 		}
 		return errors;
 	}
@@ -31,4 +31,5 @@ public class Response<T> {
 		this.errors = errors;
 	}
 
+	
 }

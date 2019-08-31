@@ -80,7 +80,7 @@ public class Maintence implements Serializable {
 	public void setPriceMaintence(Double priceMaintence) {
 		this.priceMaintence = priceMaintence;
 	}
-
+	
 	@OneToMany(mappedBy = "maintence", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	public List<Part> getPart() {
 		return part;

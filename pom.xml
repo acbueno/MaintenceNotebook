@@ -12,7 +12,7 @@
 	<artifactId>maintence-notebook</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>MaintenceNotebook</name>
-	<description>Projeto Ponto Inteligente API</description>
+	<description>Projeto Cardeno de Manutencoes AutomotivaI</description>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -37,7 +37,7 @@
 		<dependency>
     		<groupId>mysql</groupId>
     		<artifactId>mysql-connector-java</artifactId>
-    		 <version>5.1.28</version>
+    		 <version>5.1.28</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -48,7 +48,7 @@
     		<groupId>org.flywaydb</groupId>
     		<artifactId>flyway-core</artifactId>
 		</dependency>
-	</dependencies>
+	</dependencies> 
 
 	<build>
 		<plugins>

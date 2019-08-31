@@ -12,25 +12,31 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.abueno.api.entity.Model;
+import br.com.abueno.api.enums.FuelType;
 
-@NamedQueries({
-		@NamedQuery(name = " ModelRepository.findByBrandId", query = "SELECT mo FROM Model mo "
-				+ " WHERE mo.brand.id = :brandId"),
-		@NamedQuery(name = "ModelRepository.findByUserId", query = "SELECT mo FROM Model mo WHERE mo.user.id = :userId") })
+@NamedQueries({ @NamedQuery(name = " ModelRepository.findByBrandName", query = "SELECT mo FROM Model mo "
+		+ "JOIN Brand br on br.id=mo.brand_id " + " WHERE mo.brand.id = :brandName") })
 public interface ModelRepository extends JpaRepository<Model, Long> {
 
 	@Transactional(readOnly = true)
 	Optional<Model> findById(Long id);
 
 	@Transactional(readOnly = true)
-	Model findByModelName(String modelName);
+	Model findByName(String name);
 
-	Model findByBrandId(@Param("brandId") Long brandId);
+	@Transactional(readOnly = true)
+	Page<Model> findByName(String name, Pageable pePageable);
+	
+	Page<Model> findByVersion(String version, Pageable pePageable);
 
-	Page<Model> findByBrandId(@Param("brandId") Long brandId, Pageable pageable);
+	Optional<Model> findByVersion(String version); 
 
-	Model findByUserId(@Param("userId") Long userId);
+	Optional<Model> findByFuelType(FuelType fuelType); 
+	
+	
 
-	Page<Model> findByUserId(@Param("userId") Long userId, Pageable pageable);
+	Model findByBrandName(@Param("brandName") String brandName);
+
+	Page<Model> findByBrandName(@Param("brandName") String brandName, Pageable pageable);
 
 }

@@ -27,7 +27,7 @@ public class User implements Serializable {
 	private String email;
 	private String login;
 	private String password;
-	private List<Model> model;
+	private List<UserModels> userModels;
 
 	public User() {
 
@@ -80,18 +80,18 @@ public class User implements Serializable {
 	}
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	public List<Model> getModel() {
-		return model;
+	public List<UserModels> getUserModels() {
+		return userModels;
 	}
 
-	public void setModel(List<Model> model) {
-		this.model = model; 
+	public void setUserModels(List<UserModels> userModels) {
+		this.userModels = userModels; 
 	}
 
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + ", email=" + email + ", login=" + login + ", password=" + password
-				+ ", model=" + model + "]";
+				+ ", userModels=" + userModels + "]";
 	}
 
 }
