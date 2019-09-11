@@ -16,7 +16,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "user")
 public class User implements Serializable {
- 
+
 	/**
 	 * 
 	 */
@@ -27,12 +27,12 @@ public class User implements Serializable {
 	private String email;
 	private String login;
 	private String password;
-	private List<UserModels> userModels;
+	private List<Model> models;
 
 	public User() {
-
+  
 	}
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public long getId() {
@@ -79,19 +79,19 @@ public class User implements Serializable {
 		this.password = password;
 	}
 
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	public List<UserModels> getUserModels() {
-		return userModels;
+	@OneToMany(mappedBy = "user", targetEntity = Model.class,  fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	public List<Model> getModels() {
+		return models;
 	}
 
-	public void setUserModels(List<UserModels> userModels) {
-		this.userModels = userModels; 
+	public void setModels(List<Model> models) {
+		this.models = models;
 	}
 
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + ", email=" + email + ", login=" + login + ", password=" + password
-				+ ", userModels=" + userModels + "]";
+				+ ", models=" + models + "]";
 	}
 
 }

@@ -27,6 +27,8 @@ public interface ModelServices {
 	 Page<Model> findModelByVersion(String version, PageRequest pageRequest); 
 	 
 	 Optional<Model> findModelByFuelType(FuelType fuelType);
+
+	Page<Model> findModelByUserId(Long id, PageRequest pageRequest);
 	 
 	
 }

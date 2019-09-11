@@ -6,9 +6,6 @@ import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
 
-import br.com.abueno.api.entity.Brand;
-import br.com.abueno.api.enums.FuelType;
-
 public class ModelDTO {
 
 	private Optional<Long> id = Optional.empty();
@@ -16,6 +13,9 @@ public class ModelDTO {
 	private String version;
 	private String brand;
 	private String fuelType;
+	private String yearModel;
+	private String yearManufacture;
+	private Optional<Long> userId = Optional.empty();
 
 	public ModelDTO() {
 
@@ -64,5 +64,41 @@ public class ModelDTO {
 	public void setFuelType(String fuelType) {
 		this.fuelType = fuelType;
 	}
+	
+	@NotEmpty
+	@Length(min = 4, max = 4, message = "Digite data no padrao YYYY")
+	public String getYearModel() {
+		return yearModel;
+	}
+
+	public void setYearModel(String yearModel) {
+		this.yearModel = yearModel;
+	}
+
+	public String getYearManufacture() {
+		return yearManufacture;
+	}
+
+	public void setYearManufacture(String yearManufacture) {
+		this.yearManufacture = yearManufacture;
+	}
+	
+	
+
+	public Optional<Long> getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Optional<Long> userId) {
+		this.userId = userId;
+	}
+
+	@Override
+	public String toString() {
+		return "ModelDTO [id=" + id + ", name=" + name + ", version=" + version + ", brand=" + brand + ", fuelType="
+				+ fuelType + ", yearModel=" + yearModel + ", yearKanufacture=" + yearManufacture + "]";
+	}
+	
+	
 
 }

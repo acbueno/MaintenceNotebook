@@ -70,4 +70,12 @@ public class ModelServicesImpl implements ModelServices {
 		return modelRepository.findByVersion(version, pageRequest);
 	}
 
+	@Override
+	public Page<Model> findModelByUserId(Long id, PageRequest pageRequest) {
+		log.info("Search byModelByUser");
+		return modelRepository.findByUserId(id, pageRequest);
+	}
+	
+	
+
 }

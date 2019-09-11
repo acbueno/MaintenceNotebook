@@ -1,5 +1,6 @@
 package br.com.abueno.api.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -33,6 +34,8 @@ public class ModelController {
 	private int qtdPorPagina;
 
 	private static final Logger log = LoggerFactory.getLogger(ModelController.class);
+	
+	private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy");
 	
 	 public ModelController() {
 		
@@ -110,6 +113,27 @@ public class ModelController {
 		
 	}
 	
+	@GetMapping(value = "user/{userId}")
+	public ResponseEntity<Response<Page<ModelDTO>>> listByUser(@PathVariable("userId") Long idUser,
+			@RequestParam(value = "pag", defaultValue = "0") int pag,
+			@RequestParam(value = "ord", defaultValue = "id") String ord,
+			@RequestParam(value = "dir", defaultValue = "DESC") String dir) {
+		log.info("Search Mobel by user");
+		Response<Page<ModelDTO>> response = new Response<Page<ModelDTO>>();
+		PageRequest pageRequest = new PageRequest(pag, this.qtdPorPagina, Direction.valueOf(dir), ord);
+		Page<Model> models = this.modelServices.findModelByUserId(idUser, pageRequest);
+		if (models == null) {
+			log.info("user Id not found", idUser);
+			response.getErrors().add("idUSer not found" + idUser);
+
+			return ResponseEntity.badRequest().body(response);
+		}
+
+		Page<ModelDTO> modelsDto = models.map(model -> this.convertModelDTO(model));
+		response.setData(modelsDto);
+		return ResponseEntity.ok(response);
+	}
+	
 	
 	private ModelDTO convertModelDTO(Model model) {
 		ModelDTO modelDTO = new ModelDTO();
@@ -118,6 +142,9 @@ public class ModelController {
 		modelDTO.setFuelType(model.getFuel().getType());
 		modelDTO.setVersion(model.getVersion());
 		modelDTO.setBrand(model.getBrand().getName());
+		modelDTO.setYearModel(this.dateFormat.format(model.getModelYear()));
+		modelDTO.setYearManufacture(this.dateFormat.format(model.getManufacturedYear()));
+		modelDTO.setUserId(Optional.of(model.getUser().getId()));
 
 		return modelDTO;
 	}

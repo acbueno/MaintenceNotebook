@@ -15,7 +15,7 @@ import br.com.abueno.api.entity.Model;
 import br.com.abueno.api.enums.FuelType;
 
 @NamedQueries({ @NamedQuery(name = " ModelRepository.findByBrandName", query = "SELECT mo FROM Model mo "
-		+ "JOIN Brand br on br.id=mo.brand_id " + " WHERE mo.brand.id = :brandName") })
+		+ "JOIN Brand br on br.id=mo.brand_id " + " WHERE mo.brand.id = :brandName")})
 public interface ModelRepository extends JpaRepository<Model, Long> {
 
 	@Transactional(readOnly = true)
@@ -38,5 +38,9 @@ public interface ModelRepository extends JpaRepository<Model, Long> {
 	Model findByBrandName(@Param("brandName") String brandName);
 
 	Page<Model> findByBrandName(@Param("brandName") String brandName, Pageable pageable);
+	
+	Page<Model> findByUserId(Long id, Pageable pePageable);
+	
+	
 
 }
