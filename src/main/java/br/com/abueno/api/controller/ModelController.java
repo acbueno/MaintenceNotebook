@@ -12,11 +12,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import br.com.abueno.api.dto.ModelDTO;
 import br.com.abueno.api.entity.Model;
 import br.com.abueno.api.response.Response;
@@ -34,11 +36,11 @@ public class ModelController {
 	private int qtdPorPagina;
 
 	private static final Logger log = LoggerFactory.getLogger(ModelController.class);
-	
+
 	private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy");
-	
-	 public ModelController() {
-		
+
+	public ModelController() {
+
 	}
 
 	@GetMapping(value = "/{id}")
@@ -58,7 +60,6 @@ public class ModelController {
 
 	}
 
-	
 	@GetMapping(value = "name/{name}")
 	public ResponseEntity<Response<Page<ModelDTO>>> listModelByName(@PathVariable("name") String name,
 			@RequestParam(value = "pag", defaultValue = "0") int pag,
@@ -75,15 +76,13 @@ public class ModelController {
 
 		return ResponseEntity.ok(response);
 	}
-	
-	
 
-	@GetMapping(value = "version/{version}") 
+	@GetMapping(value = "version/{version}")
 	public ResponseEntity<Response<Page<ModelDTO>>> listByModelVersion(@PathVariable("version") String versionName,
 			@RequestParam(value = "pag", defaultValue = "0") int pag,
 			@RequestParam(value = "ord", defaultValue = "id") String ord,
 			@RequestParam(value = "dir", defaultValue = "DESC") String dir) {
-		
+
 		log.info("Search Model by Version");
 		Response<Page<ModelDTO>> response = new Response<Page<ModelDTO>>();
 		PageRequest pageRequest = new PageRequest(pag, this.qtdPorPagina, Direction.valueOf(dir), ord);
@@ -92,13 +91,11 @@ public class ModelController {
 
 		response.setData(modelsDto);
 
-		return ResponseEntity.ok(response); 
+		return ResponseEntity.ok(response);
 	}
-	
 
 	@GetMapping(value = "brand/{name}")
-	public ResponseEntity<Response<Page<ModelDTO>>> listByModelByBrand(
-			@PathVariable("name") String brandName,
+	public ResponseEntity<Response<Page<ModelDTO>>> listByModelByBrand(@PathVariable("name") String brandName,
 			@RequestParam(value = "pag", defaultValue = "0") int pag,
 			@RequestParam(value = "ord", defaultValue = "id") String ord,
 			@RequestParam(value = "dir", defaultValue = "DESC") String dir) {
@@ -106,13 +103,13 @@ public class ModelController {
 		Response<Page<ModelDTO>> response = new Response<Page<ModelDTO>>();
 		PageRequest pageRequest = new PageRequest(pag, this.qtdPorPagina, Direction.valueOf(dir), ord);
 		Page<Model> models = this.modelServices.findModelByBrand(brandName, pageRequest);
-		Page<ModelDTO> modelsDto =  models.map(model -> this.convertModelDTO(model));
-		
+		Page<ModelDTO> modelsDto = models.map(model -> this.convertModelDTO(model));
+
 		response.setData(modelsDto);
 		return ResponseEntity.ok(response);
-		
+
 	}
-	
+
 	@GetMapping(value = "user/{userId}")
 	public ResponseEntity<Response<Page<ModelDTO>>> listByUser(@PathVariable("userId") Long idUser,
 			@RequestParam(value = "pag", defaultValue = "0") int pag,
@@ -133,8 +130,72 @@ public class ModelController {
 		response.setData(modelsDto);
 		return ResponseEntity.ok(response);
 	}
+
+	@GetMapping(value = "fuel/type/{fuelType}")
+	public ResponseEntity<Response<Page<ModelDTO>>> listByFuel(@PathVariable("fuelType") String fuelType,
+			@RequestParam(value = "pag", defaultValue = "0") int pag,
+			@RequestParam(value = "ord", defaultValue = "id") String ord,
+			@RequestParam(value = "dir", defaultValue = "DESC") String dir) {
+		log.info("Search Model by Fuel");
+
+		Response<Page<ModelDTO>> response = new Response<Page<ModelDTO>>();
+		PageRequest pageRequest = new PageRequest(pag, this.qtdPorPagina, Direction.valueOf(dir), ord);
+		Page<Model> models = this.modelServices.findModelByFuel(fuelType, pageRequest);
+
+		if (models == null) {
+			log.info("user id not found", fuelType);
+
+			return ResponseEntity.badRequest().body(response);
+
+		}
+
+		Page<ModelDTO> modelDto = models.map(model -> this.convertModelDTO(model));
+		response.setData(modelDto);
+
+		return ResponseEntity.ok(response);
+
+	}
+
+	@GetMapping(value = "fuel/id/{fuelId}")
+	public ResponseEntity<Response<Page<ModelDTO>>> listByFuelId(@PathVariable("fuelId") Long id,
+			@RequestParam(value = "pag", defaultValue = "0") int pag,
+			@RequestParam(value = "ord", defaultValue = "id") String ord,
+			@RequestParam(value = "dir", defaultValue = "DESC") String dir) {
+		log.info("Search By Fuel");
+
+		Response<Page<ModelDTO>> response = new Response<Page<ModelDTO>>();
+		PageRequest pageRequest = new PageRequest(pag, this.qtdPorPagina);
+		Page<Model> models = this.modelServices.findModelByFuelId(id, pageRequest);
+
+		if (models == null) {
+			log.info("User id not found", id);
+			return ResponseEntity.badRequest().body(response);
+		}
+
+		Page<ModelDTO> modelDto = models.map(model -> this.convertModelDTO(model));
+
+		response.setData(modelDto);
+
+		return ResponseEntity.ok(response);
+	}
 	
-	
+	@DeleteMapping(value = "delete/{id}")
+	public ResponseEntity<Response<String>> removeModel(@PathVariable("id") Long id) {
+		log.info("Remove Model {} ", id);
+		Response<String> response = new Response<String>();
+		Optional<Model> model = this.modelServices.findModelById(id);
+		
+		if(!model.isPresent()) {
+			log.info("Error remove Model ID {}", id);
+			response.getErrors().add("Erro remove model. Regiter not found" + id);
+			
+			return ResponseEntity.badRequest().body(response);
+		}
+		
+		this.modelServices.deleteModel(id);
+		return ResponseEntity.ok(new Response<String>());
+	}
+
 	private ModelDTO convertModelDTO(Model model) {
 		ModelDTO modelDTO = new ModelDTO();
 		modelDTO.setId(Optional.of(model.getId()));
@@ -145,6 +206,15 @@ public class ModelController {
 		modelDTO.setYearModel(this.dateFormat.format(model.getModelYear()));
 		modelDTO.setYearManufacture(this.dateFormat.format(model.getManufacturedYear()));
 		modelDTO.setUserId(Optional.of(model.getUser().getId()));
+		if (model.getDistanceDriven() != null) {
+			modelDTO.setDistance_driven(Optional.of(model.getDistanceDriven().getDistanceDriven()));
+			modelDTO.setMeausreType(Optional.ofNullable(model.getDistanceDriven().getMeausreType()));
+		} else {
+			long driven = 0;
+			String measureType = "KM";
+			modelDTO.setDistance_driven(Optional.of(driven));
+			modelDTO.setMeausreType(Optional.of(measureType));
+		}
 
 		return modelDTO;
 	}

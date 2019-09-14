@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import br.com.abueno.api.entity.Fuel;
 import br.com.abueno.api.entity.Model;
 import br.com.abueno.api.enums.FuelType;
 
@@ -26,9 +27,15 @@ public interface ModelServices {
 	 
 	 Page<Model> findModelByVersion(String version, PageRequest pageRequest); 
 	 
-	 Optional<Model> findModelByFuelType(FuelType fuelType);
+	 Optional<Model> findModelByFuel(String type);
 
 	Page<Model> findModelByUserId(Long id, PageRequest pageRequest);
+
+	Page<Model> findModelByFuel(String type, PageRequest pageRequest);
+	
+	Page<Model> findModelByFuelId(Long id, PageRequest pageRequest);
+	
+	void deleteModel(long id);
 	 
 	
 }

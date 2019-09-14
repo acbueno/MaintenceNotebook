@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import br.com.abueno.api.entity.Fuel;
 import br.com.abueno.api.entity.Model;
 import br.com.abueno.api.enums.FuelType;
 import br.com.abueno.api.repository.ModelRepository;
@@ -34,7 +35,7 @@ public class ModelServicesImpl implements ModelServices {
 		log.info("Search by Model Name");
 		return Optional.ofNullable(this.modelRepository.findByName(name));
 	}
- 
+
 	@Override
 	public Optional<Model> findModelByVersion(String version) {
 		log.info("Serch by Molde By Version");
@@ -48,9 +49,9 @@ public class ModelServicesImpl implements ModelServices {
 	}
 
 	@Override
-	public Optional<Model> findModelByFuelType(FuelType fuelType) {
+	public Page<Model> findModelByFuel(String type, PageRequest pageRequest) {
 		log.info("Search by FuelType");
-		return this.modelRepository.findByFuelType(fuelType);
+		return this.modelRepository.findByFuelType(type, pageRequest);
 	}
 
 	public Page<Model> findModelByBrand(String brandName, PageRequest pageRequest) {
@@ -61,7 +62,7 @@ public class ModelServicesImpl implements ModelServices {
 	@Override
 	public Page<Model> findModelByName(String name, PageRequest pageRequest) {
 		log.info("Search by ModelByName");
-		return modelRepository.findByName(name, pageRequest); 
+		return modelRepository.findByName(name, pageRequest);
 	}
 
 	@Override
@@ -75,7 +76,22 @@ public class ModelServicesImpl implements ModelServices {
 		log.info("Search byModelByUser");
 		return modelRepository.findByUserId(id, pageRequest);
 	}
-	
-	
+
+	@Override
+	public Optional<Model> findModelByFuel(String type) {
+		return Optional.of(modelRepository.findByFuelType(type));
+	}
+
+	@Override
+	public Page<Model> findModelByFuelId(Long id, PageRequest pageRequest) {
+		log.info("Searh Model By FuelType");
+		return modelRepository.findByFuelId(id, pageRequest);
+	}
+
+	@Override
+	public void deleteModel(long id) {
+		log.info("Delete model");
+		this.modelRepository.deleteById(id);
+	}
 
 }

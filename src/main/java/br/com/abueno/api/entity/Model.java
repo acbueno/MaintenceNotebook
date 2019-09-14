@@ -32,6 +32,7 @@ public class Model implements Serializable {
 	private Date modelYear;
 	private Date manufacturedYear;
 	private User user;
+	private DistanceDriven distanceDriven;
 
 	public Model() {
 
@@ -66,7 +67,7 @@ public class Model implements Serializable {
 	}
 
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "brand_id", referencedColumnName = "id")
+	
 	public Brand getBrand() {
 		return brand;
 	}
@@ -112,9 +113,20 @@ public class Model implements Serializable {
 	public User getUser() {
 		return user;
 	}
-
+	
 	public void setUser(User user) {
 		this.user = user;
 	}
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_distance_driven", referencedColumnName = "id")
+	public DistanceDriven getDistanceDriven() {
+		return distanceDriven;
+	}
+
+	public void setDistanceDriven(DistanceDriven distanceDriven) {
+		this.distanceDriven = distanceDriven;
+	}
+	
+	
 
 }

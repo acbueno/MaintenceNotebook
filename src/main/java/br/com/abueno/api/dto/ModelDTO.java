@@ -1,5 +1,7 @@
 package br.com.abueno.api.dto;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Optional;
 
 import javax.validation.constraints.NotEmpty;
@@ -12,10 +14,12 @@ public class ModelDTO {
 	private String name;
 	private String version;
 	private String brand;
-	private String fuelType;
+	private String fuelType; 
 	private String yearModel;
 	private String yearManufacture;
 	private Optional<Long> userId = Optional.empty();
+	private Optional<Long> distance_driven = Optional.empty();
+	private Optional<String> meausreType = Optional.ofNullable("KM");
 
 	public ModelDTO() {
 
@@ -91,6 +95,25 @@ public class ModelDTO {
 
 	public void setUserId(Optional<Long> userId) {
 		this.userId = userId;
+	}
+
+
+	public Optional<Long> getDistance_driven() {
+		return distance_driven;
+	}
+
+	public void setDistance_driven(Optional<Long> distance_driven) {
+		this.distance_driven = distance_driven;
+	}
+	
+	
+
+	public Optional<String> getMeausreType() {
+		return meausreType;
+	}
+
+	public void setMeausreType(Optional<String> meausreType) {
+		this.meausreType = meausreType;
 	}
 
 	@Override
