@@ -94,4 +94,10 @@ public class ModelServicesImpl implements ModelServices {
 		this.modelRepository.deleteById(id);
 	}
 
+	@Override
+	public Model insert(Model model) {
+		log.info("Insert Model"); 
+		return this.modelRepository.save(model);
+	}
+
 }

@@ -5,10 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-
-import br.com.abueno.api.entity.Fuel;
 import br.com.abueno.api.entity.Model;
-import br.com.abueno.api.enums.FuelType;
 
 
 public interface ModelServices {
@@ -36,6 +33,8 @@ public interface ModelServices {
 	Page<Model> findModelByFuelId(Long id, PageRequest pageRequest);
 	
 	void deleteModel(long id);
+	 
+	Model insert(Model model);
 	 
 	
 }
